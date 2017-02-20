@@ -35,8 +35,14 @@ public class BindingRecyclerViewAdapter<T> extends RecyclerView.Adapter<ViewHold
     @Nullable
     private RecyclerView recyclerView;
 
+    private boolean allowUsageWithoutRecyclerView = false;
+
     public BindingRecyclerViewAdapter(@NonNull ItemViewArg<T> arg) {
         this.itemViewArg = arg;
+    }
+
+    public void setAllowUsageWithoutRecyclerView(boolean allowUsageWithoutRecyclerView) {
+        this.allowUsageWithoutRecyclerView = allowUsageWithoutRecyclerView;
     }
 
     @Override
@@ -110,7 +116,7 @@ public class BindingRecyclerViewAdapter<T> extends RecyclerView.Adapter<ViewHold
         binding.addOnRebindCallback(new OnRebindCallback() {
             @Override
             public boolean onPreBind(ViewDataBinding binding) {
-                return recyclerView != null && recyclerView.isComputingLayout();
+                return allowUsageWithoutRecyclerView || (recyclerView != null && recyclerView.isComputingLayout());
             }
 
             @Override
